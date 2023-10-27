@@ -16,9 +16,9 @@ class UpdateProjectRequest extends FormRequest
         return [
             'name' => ['string', 'required'],
             'start_date' => ['date', 'required'],
-            'end_date' => ['date', 'nullable'],
+            'end_date' => ['date', 'required'],
             'value' => ['numeric', 'required'],
-            'status' => ['string', 'nullable'],
+            'status' => ['string', 'required'],
         ];
     }
 }

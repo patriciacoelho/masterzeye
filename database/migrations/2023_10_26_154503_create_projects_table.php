@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('status')->nullable();
+            $table->string('status');
             $table->timestamp('start_date');
-            $table->timestamp('end_date')->nullable();
+            $table->timestamp('end_date');
             $table->float('value', 8, 2);
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
