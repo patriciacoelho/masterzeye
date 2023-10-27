@@ -4,11 +4,13 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import ProjectsTable from './Partials/ProjectsTable.vue';
 import EditProjectForm from './Partials/EditProjectForm.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
+import DangerButton from '@/Components/DangerButton.vue';
 import Modal from '@/Components/Modal.vue';
 import { Head } from '@inertiajs/vue3';
 
 const projects = ref([]);
 const showEditModal = ref(false);
+const showDeleteConfirmation = ref(false);
 const isEdit = ref(false);
 const selectedProject = ref({});
 
@@ -22,6 +24,11 @@ const closeEditProjectModal = () => {
     selectedProject.value = {};
 };
 
+const closeDeleteConfirmation = () => {
+    showDeleteConfirmation.value = false;
+    selectedProject.value = {};
+};
+
 const handleEditProject = (project) => {
     selectedProject.value = project;
     showEditModal.value = true;
@@ -29,7 +36,8 @@ const handleEditProject = (project) => {
 };
 
 const handleDeleteProject = (project) => {
-    // selectedProject.value = project;
+    selectedProject.value = project;
+    showDeleteConfirmation.value = true;
 };
 
 const handleSuccessUpdate = (message) => {
@@ -37,6 +45,13 @@ const handleSuccessUpdate = (message) => {
     getProjects();
     closeEditProjectModal();
 }
+
+const deleteProject = (params) => axios.delete(route('projects.destroy', params.id))
+    .then(({ data }) => {
+        console.info(data.message);
+        getProjects();
+        closeDeleteConfirmation();
+    });
 
 const getProjects = () => axios.get(route('projects.index'))
     .then(({ data }) => {
@@ -81,6 +96,24 @@ onMounted(() => {
                     @success="handleSuccessUpdate"
                     @cancel="closeEditProjectModal"
                 />
+            </div>
+        </Modal>
+
+        <Modal :show="showDeleteConfirmation" @close="closeDeleteConfirmation">
+            <div class="p-6">
+                <h2 class="text-lg font-medium text-gray-900">
+                    Are you sure you want to delete this project?
+                </h2>
+                <div class="mt-6 flex justify-end">
+                    <SecondaryButton @click="closeDeleteConfirmation"> Cancel </SecondaryButton>
+
+                    <DangerButton
+                        class="ml-3"
+                        @click="deleteProject(selectedProject)"
+                    >
+                        Delete Project
+                    </DangerButton>
+                </div>
             </div>
         </Modal>
     </AuthenticatedLayout>
