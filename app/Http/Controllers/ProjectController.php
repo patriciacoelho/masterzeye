@@ -26,14 +26,14 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request, Project $projects): JsonResponse
     {
-        dd($request->validated());
         $projects->create(
             $request->validated()
             + ['user_id' => $request->user()->id ]
         );
 
         return response()
-            ->json(['message' => 'Project successfully created!']);
+            ->json(['message' => 'Project successfully created!'])
+            ->setStatusCode(JsonResponse::HTTP_CREATED);
     }
 
     /**

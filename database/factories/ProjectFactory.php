@@ -16,7 +16,8 @@ class ProjectFactory extends Factory
 
         return [
             'name' => fake()->company(),
-            'start_date' => fake()->dateTimeBetween('-2 years', '-3 days'),
+            'start_date' => fake()->dateTimeBetween('-2 years', '-3 days')->format('Y-m-d'),
+            'end_date' => fake()->dateTimeBetween('-2 days', '2 years')->format('Y-m-d'),
             'value' => fake()->randomFloat(2, 2000, 80000),
             'status' => fake()->randomElement(['active', 'inactive']),
             'user_id' => $user->id,
@@ -37,7 +38,6 @@ class ProjectFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'status' => 'inactive',
-                'end_date' => fake()->dateTimeBetween('-2 days', 'now'),
             ];
         });
     }
