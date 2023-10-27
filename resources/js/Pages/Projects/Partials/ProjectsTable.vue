@@ -3,20 +3,20 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import { DateTime } from 'luxon';
 
-defineProps({
+const props = defineProps({
     projects: {
         type: Array,
         required: true
     },
 });
 
-function formatDate(date) {
+const formatDate = (date) => {
     if (!date) {
         return '';
     }
 
     return DateTime.fromSQL(date).toFormat('dd/MM/yyyy');
-}
+};
 </script>
 
 <template>
@@ -64,10 +64,10 @@ function formatDate(date) {
                     {{ project.creator_name }}
                 </td>
                 <td>
-                    <PrimaryButton class="ml-4">
+                    <PrimaryButton class="ml-4" @click="$emit('edit', project)">
                         Edit
                     </PrimaryButton>
-                    <DangerButton class="ml-4">
+                    <DangerButton class="ml-4" @click="$emit('delete', project)">
                         Delete
                     </DangerButton>
                 </td>
