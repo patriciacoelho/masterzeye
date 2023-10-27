@@ -31,6 +31,8 @@ and paste the follow code (change `<YOUR-PASSWORD>` for whatever you want, such 
     ]);
 ```
 
+- Open `http://localhost/` on browser, go to login and fill with those credentials;
+
 ## License
 
 This project is an open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
