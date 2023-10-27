@@ -5,6 +5,7 @@ import ProjectsTable from './Partials/ProjectsTable.vue';
 import EditProjectForm from './Partials/EditProjectForm.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import DangerButton from '@/Components/DangerButton.vue';
+import Pagination from '@/Components/Pagination.vue';
 import Modal from '@/Components/Modal.vue';
 import { Head } from '@inertiajs/vue3';
 
@@ -13,6 +14,8 @@ const showEditModal = ref(false);
 const showDeleteConfirmation = ref(false);
 const isEdit = ref(false);
 const selectedProject = ref({});
+const currentPage = ref(1);
+const pages = ref(1);
 
 const openEditProjectModal = () => {
     showEditModal.value = true;
@@ -53,10 +56,17 @@ const deleteProject = (params) => axios.delete(route('projects.destroy', params.
         closeDeleteConfirmation();
     });
 
-const getProjects = () => axios.get(route('projects.index'))
+const getProjects = (params) => axios.get(route('projects.index'), { params })
     .then(({ data }) => {
         projects.value = data.projects;
+        currentPage.value = data.meta.current_page;
+        pages.value = data.meta.last_page;
     });
+
+const changePage = (page) => {
+    currentPage.value = page;
+    getProjects({ page });
+};
 
 onMounted(() => {
     getProjects();
@@ -83,6 +93,12 @@ onMounted(() => {
                         :projects="projects"
                         @edit="handleEditProject"
                         @delete="handleDeleteProject"
+                    />
+                    <Pagination
+                        class="py-3"
+                        :current-page="currentPage"
+                        :pages="pages"
+                        @change-page="changePage"
                     />
                 </div>
             </div>

@@ -16,7 +16,7 @@ class ProjectController extends Controller
      */
     public function index() : ProjectCollection
     {
-        $projects = Project::orderBy('name')->get();
+        $projects = Project::orderBy('name')->paginate(10);
 
         return ProjectCollection::make($projects);
     }
