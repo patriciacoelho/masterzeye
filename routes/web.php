@@ -30,6 +30,10 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/projects/list', function () {
+    return Inertia::render('Projects/List');
+})->middleware(['auth', 'verified'])->name('projects.list');
+
 
 Route::middleware('auth')->group(function () {
     Route::resource('projects', ProjectController::class);
